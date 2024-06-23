@@ -32,4 +32,37 @@ def shortest_path_search(start, successors, is_goal):
             else:
                 frontier.append(path_2)
 
-    return [path_2]
+    return []
+
+
+# Example - pouring problem
+
+def is_goal(state):
+    return state == (6, 0)
+
+
+start_state = (0, 0)
+
+
+def successors(X, Y):  # X and Y are capacity of glasses
+
+    def sc(state):
+
+        x, y = state
+
+        assert x <= X and y <= Y  # state x and y must be smaller or equal to succesors X and Y
+
+        return {
+            (X, y): "fill x",
+            (x, Y): "fill y",
+            (0, y): "empty x",
+            (x, 0): "empty y",
+            (0, y + x) if y+x <= Y else (x-(Y-y), Y): "x->y",
+            (x+y, 0) if x+y <= X else (X, y-(X-x)): "x<-y"
+        }
+
+    return sc
+
+
+res = shortest_path_search(start_state, successors(418, 986), is_goal)
+print(res)
